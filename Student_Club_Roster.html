@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Club Membership</title>
+
+    <style>
+
+        .selected {
+            text-decoration: line-through ;
+            font-style: italic;
+            color: gray;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 5px 5px 0px;
+            box-sizing: border-box;
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Student Club Roster</h1>
+
+<h2>Add Students</h2>
+
+<label for="student-name">Student Name</label><input id="student-name" name="student-name">
+<br>
+<label for="student-id">Student ID</label><input id="student-id" name="student-id">
+<br>
+<label for="student-gpa">Student GPA</label><input id="student-gpa" name="student-gpa" type="number">
+<br>
+<button id="add-student">Add Student</button>
+
+<h2>Student List</h2>
+
+<p>There are
+    <span id="student-count">
+          <!-- use JavaScript to count the number of students, and show here -->
+        </span>
+    student(s) in the club.</p>
+
+
+<ul id="student-list">
+    <!-- use JavaScript to create li elements  -->
+</ul>
+
+<button id="remove-selected-students">Remove selected students</button>
+
+<script>
+
+    let studentCount = document.querySelector('#student-count')
+    let addStudent = document.querySelector('#add-student')
+    let studentName = document.querySelector('#student-name')
+    let studentID = document.querySelector('#student-id')
+    let studentGPA = document.querySelector('#student-gpa')
+    let studentList = document.querySelector('#student-list')
+    let removeStudents = document.querySelector('#remove-selected-students')
+
+    let studentsInList = studentList.querySelectorAll('li')
+
+    studentCount.innerHTML = 0
+
+    addStudent.addEventListener('click', function (){
+        if (studentName.value.length === 0){
+            alert('Name not entered, try again.')
+            return
+        }
+        if (studentID.value.length === 0){
+            alert('ID not entered, try again.')
+            return
+        }
+        if (studentGPA.value.length === 0){
+            alert('GPA not entered, try again.')
+            return
+        } else if (studentGPA.value > 4 || studentGPA.value < 0){
+            alert('GPA needs to be between 0 and 4')
+            return;
+        }
+        let newStudent = document.createElement('li')
+        newStudent.innerHTML = `${studentName.value}, ID: ${studentID.value}, GPA: ${studentGPA.value}`
+        studentList.appendChild(newStudent)
+        studentCount.innerHTML = studentList.childElementCount
+
+        studentName.value= ''
+        studentID.value = ''
+        studentGPA.value  = ''
+
+        studentsInList = document.querySelectorAll('li')
+
+    })
+
+
+    studentList.addEventListener('click',function (){
+        studentsInList.forEach( function (student){
+            student.addEventListener('click', function (){
+                if (student.classList.contains('selected')){
+                    student.classList.remove('selected')
+                }else {
+                    student.classList.toggle('selected')
+                }
+            })
+        })
+    })
+
+
+    removeStudents.addEventListener('click',function (){
+        let studentsToBeRemoved = document.querySelectorAll('.selected')
+        for (let i =0;i < studentsToBeRemoved.length;i++){
+            studentsToBeRemoved[i].remove()
+        }
+    })
+
+
+
+
+
+</script>
+
+</body>
+</html>
